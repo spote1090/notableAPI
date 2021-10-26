@@ -1,0 +1,19 @@
+/**
+ * 
+ */
+package notable;
+
+/**
+ * @author shubh
+ *
+ */
+public class datastore {
+
+	/**
+	 * 
+	 */
+	public datastore() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

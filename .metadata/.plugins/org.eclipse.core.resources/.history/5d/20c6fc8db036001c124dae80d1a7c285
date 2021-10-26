@@ -1,0 +1,78 @@
+package notable;
+
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.Date;
+import java.util.Scanner;
+import org.json.JSONObject;
+
+public class RestApiClient {
+
+	public static void main(String[] args) throws IOException{
+		
+		Scanner scanner = new Scanner(System.in);
+		
+		System.out.println("Welcome to the Patient Appoinment Scheduler");
+		System.out.println("Do you want to schedule an appointment");
+		System.out.println("(Type 'get' or 'set' now.)");
+		String getOrSet = scanner.nextLine();
+		if("get".equalsIgnoreCase(getOrSet)){
+			System.out.println("Whose info do you want to get?");
+			System.out.println("(Type a 's name now.)");
+			String name = scanner.nextLine();
+			
+			String jsonString = getData(name);
+			JSONObject jsonObject = new JSONObject(jsonString);
+
+			Date date = jsonObject.getInt("Time");
+			System.out.println(name + "'s available at" + date + ".");
+			
+			String about = jsonObject.getString("about");
+			System.out.println(about);
+		}
+		else if("set".equalsIgnoreCase(getOrSet)){
+			System.out.println("Which doctor's appointment do you want to schedule?");
+			System.out.println("(Type a doctors's name now.)");
+			String name = scanner.nextLine();
+			
+			System.out.println("What time " + name + " born?");
+			Date date = scanner.nextLine();
+		
+			System.out.println("Can you tell me about " + name + "?");
+			System.out.println("(Type a sentence now.)");
+			String kind = scanner.nextLine();
+			
+			setData(name, date, kind, password);
+		}
+		
+		scanner.close();
+		
+		System.out.println("Have a wonerful day!.");
+		
+	}
+	
+	public static String getData(String name) throws IOException{
+
+		HttpURLConnection connection = (HttpURLConnection) new URL("http://localhost:8080/people/" + name).openConnection();
+		
+		connection.setRequestMethod("GET");
+
+		int responseCode = connection.getResponseCode();
+		if(responseCode == 200){
+			String response = "";
+			Scanner scanner = new Scanner(connection.getInputStream());
+			while(scanner.hasNextLine()){
+				response += scanner.nextLine();
+				response += "\n";
+			}
+			scanner.close();
+
+			return response;
+		}
+		
+		// an error happened
+		return null;
+	}

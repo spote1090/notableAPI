@@ -1,0 +1,46 @@
+/**
+ * 
+ */
+package notable;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * @author shubh
+ *
+ */
+
+/**
+ * Example DataStore class that provides access to user data.
+ * Pretend this class accesses a database.
+ */
+public class DataStore {
+
+	//Map of names to Person instances.
+	private Map<String, Doctor> doctorMap = new HashMap();
+	
+	//this class is a singleton and should not be instantiated directly!
+	private static DataStore instance = new DataStore();
+	public static DataStore getInstance(){
+		return instance;
+	}
+
+	//private constructor so people know to use the getInstance() function instead
+	private DataStore(){
+		//dummy data
+		doctorMap.put("Sterling", new Doctor(null, null, null));
+		doctorMap.put("Cyril", new Doctor(null, null, null));
+		doctorMap.put("Ray", new Doctor(null, null, null));
+		doctorMap.put("Lana", new Doctor(null, null, null));
+		doctorMap.put("Pam", new Doctor(null, null, null));
+	}
+
+	public Doctor getPerson(String name) {
+		return doctorMap.get(name);
+	}
+
+	public void putPerson(Doctor doctor) {
+		doctorMap.put(doctor.getName(), doctor);
+	}
+}
